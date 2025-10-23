@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>AgentFlux: Privacy-Preserving On-Device Agentic Systems</title>
@@ -11,14 +11,774 @@
     <meta property="og:description" content="A framework for privacy-preserving, on-device AI agent workloads with decoupled fine-tuning for tool selection and argument generation." />
     <meta property="og:type" content="website" />
     
-    <link rel="icon" type="image/png" href="./favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="./assets/index-DUIdmQuM.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-C97EFFfS.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 0 0% 13%;
+            --muted: 0 0% 96%;
+            --muted-foreground: 0 0% 40%;
+            --primary: 217 91% 60%;
+            --primary-foreground: 0 0% 100%;
+            --accent: 217 91% 97%;
+            --accent-foreground: 217 91% 60%;
+            --card: 0 0% 100%;
+            --card-foreground: 0 0% 13%;
+            --border: 0 0% 90%;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1152px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: hsl(var(--background) / 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid hsl(var(--border));
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+        }
+        
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: hsl(var(--muted-foreground));
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+        
+        nav a:hover {
+            color: hsl(var(--foreground));
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid hsl(var(--border));
+            color: hsl(var(--foreground));
+        }
+        
+        .btn-lg {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+        
+        /* Sections */
+        section {
+            padding: 3rem 0;
+        }
+        
+        @media (min-width: 768px) {
+            section {
+                padding: 5rem 0;
+            }
+        }
+        
+        .section-border {
+            border-bottom: 1px solid hsl(var(--border));
+        }
+        
+        .section-bg {
+            background: hsl(var(--muted) / 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+        }
+        
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 1rem;
+        }
+        
+        /* Hero */
+        .hero {
+            text-align: center;
+        }
+        
+        .hero-desc {
+            font-size: 1.125rem;
+            max-width: 56rem;
+            margin: 0 auto 3rem;
+            line-height: 1.75;
+        }
+        
+        /* Cards */
+        .card {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Architecture Diagram */
+        .arch-diagram {
+            background: linear-gradient(135deg, hsl(var(--accent)), hsl(217 91% 95%));
+            border: 1px solid hsl(217 91% 85%);
+            border-radius: 0.5rem;
+            padding: 3rem 2rem;
+            margin: 3rem auto;
+            max-width: 56rem;
+        }
+        
+        .arch-box {
+            background: hsl(var(--background) / 0.9);
+            backdrop-filter: blur(4px);
+            border: 1px solid hsl(var(--border));
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .arch-box:hover {
+            transform: translateY(-4px);
+        }
+        
+        .arch-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: hsl(var(--primary) / 0.2);
+            color: hsl(var(--primary));
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+        
+        th {
+            font-weight: 600;
+            background: hsl(var(--muted));
+        }
+        
+        tr:hover {
+            background: hsl(var(--muted) / 0.3);
+        }
+        
+        .highlight-row {
+            background: hsl(var(--primary) / 0.1);
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            border-top: 1px solid hsl(var(--border));
+            text-align: center;
+            font-size: 0.875rem;
+            color: hsl(var(--muted-foreground));
+        }
+        
+        footer a {
+            color: hsl(var(--primary));
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* BibTeX */
+        .bibtex {
+            background: hsl(var(--muted));
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        
+        .flex-center {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .icon {
+            width: 2rem;
+            height: 2rem;
+            color: hsl(var(--primary));
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1 style="font-size: 1.125rem; margin: 0;">AgentFlux</h1>
+            <nav>
+                <a href="#introduction">Introduction</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#demo">Demo</a>
+                <a href="#citation">Citation</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="section-border">
+        <div class="container hero">
+            <h1>
+                AgentFlux: A Framework for Privacy-Preserving<br />
+                On-Device Agentic Systems
+            </h1>
+            
+            <p class="hero-desc">
+                We introduce a framework for privacy-preserving, on-device AI agent workloads. By decoupling agentic tasks into function selection and argument generation, both tackled by local LLM orchestration, our system delivers accuracy approaching cloud-based models while fully protecting user data from third-party exposure and enabling cost-efficient execution on consumer hardware.
+            </p>
+
+            <!-- Architecture Diagram -->
+            <div class="arch-diagram">
+                <div class="grid grid-3">
+                    <div class="arch-box">
+                        <div class="arch-number">1</div>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1rem;">Tool Selector Adapter</h3>
+                        <p style="font-size: 0.75rem; margin: 0;">Classification: Which tool to invoke?</p>
+                    </div>
+                    
+                    <div class="arch-box">
+                        <div class="arch-number">2</div>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1rem;">Argument Generator Adapter</h3>
+                        <p style="font-size: 0.75rem; margin: 0;">Generation: Tool-specific arguments</p>
+                    </div>
+                    
+                    <div class="arch-box">
+                        <div class="arch-number">3</div>
+                        <h3 style="margin-bottom: 0.5rem; font-size: 1rem;">On-Device Execution</h3>
+                        <p style="font-size: 0.75rem; margin: 0;">Privacy-preserving orchestration</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 1.5rem; font-weight: 500; color: hsl(var(--foreground));">
+                    AgentFlux: Decoupled Post-Training Pipeline & Inference Framework
+                </p>
+            </div>
+
+            <div class="flex-center" style="padding-top: 1rem;">
+                <a href="https://github.com/efeslab/AgentFlux" target="_blank" class="btn btn-lg" style="background: #24292e; color: white; border: 1px solid #1b1f23;">
+                    📄 Read Paper
+                </a>
+                <a href="https://github.com/efeslab/AgentFlux" target="_blank" class="btn btn-lg" style="background: #24292e; color: white; border: 1px solid #1b1f23;">
+                    <svg style="width: 1.25rem; height: 1.25rem; fill: currentColor;" viewBox="0 0 16 16">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    <span style="margin-left: 0.5rem;">GitHub</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction -->
+    <section id="introduction">
+        <div class="container">
+            <h2>Introduction</h2>
+            
+            <div class="card">
+                <p style="font-size: 1.125rem; margin-bottom: 1.5rem;">
+                    AI systems are rapidly expanding from chatbots and media generation to robotics and financial applications. Leading AI platforms run in the cloud, sending all user queries—often including sensitive context like code, preferences, and past interactions—to third-party providers.
+                </p>
+                
+                <div class="grid grid-2">
+                    <div>
+                        <h3>🔒 Privacy Challenge</h3>
+                        <p>User data, including medical and financial records, is routinely exposed to cloud providers.</p>
+                    </div>
+                    <div>
+                        <h3>⚡ Cost & Latency</h3>
+                        <p>Cloud APIs charge per token and throttle requests, with true steady-state costs still unknown.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>The Solution: Edge Computing with AgentFlux</h3>
+                <p>
+                    AgentFlux introduces a new framework for edge computing that partitions workloads into two distinct tasks: selection of functions that need to be called, and argument generation. This partitioning allows for a hierarchical architecture that achieves end-to-end accuracy comparable with state-of-the-art cloud models while maintaining the benefits of privacy and performance on consumer-grade GPUs.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="section-bg">
+        <div class="container">
+            <h2>Motivating Use Cases</h2>
+            
+            <div class="grid grid-3">
+                <div class="card">
+                    <div class="icon" style="margin-bottom: 1rem;">💰</div>
+                    <h3>Blockchains & Financial Applications</h3>
+                    <p style="font-size: 0.875rem;">
+                        AgentFlux enables local consolidation, analysis, and reporting across blockchain and traditional finance, keeping all private data on-device. Only anonymized outputs leave the user's machine.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon" style="margin-bottom: 1rem;">🌐</div>
+                    <h3>AI Browsers</h3>
+                    <p style="font-size: 0.875rem;">
+                        Local models execute privacy-preserving tasks for sensitive data while collaborating with cloud models for large public data like web search summarization.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon" style="margin-bottom: 1rem;">💻</div>
+                    <h3>Developer Terminals & Coding Agents</h3>
+                    <p style="font-size: 0.875rem;">
+                        AgentFlux addresses data leakage in coding assistants by executing parts locally and cost-efficiently while maintaining access to entire codebases.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section id="architecture">
+        <div class="container">
+            <h2>Core Architecture</h2>
+
+            <!-- DualTune Design Figure -->
+            <div style="margin-top: 2rem; margin-bottom: 2rem;">
+                <div style="background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <img src="./dualtune_design.png" alt="AgentFlux Architecture Design" style="width: 100%; height: auto; border-radius: 0.5rem; display: block;" />
+                </div>
+                <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); text-align: center; margin-top: 1rem;">
+                    AgentFlux architecture showing the decoupled post-training pipeline and inference framework with specialized LoRA adapters
+                </p>
+            </div>
+            
+            <div class="card">
+                <p style="font-size: 1.125rem;">
+                    Agentic systems autonomously solve complex tasks through iterative cycles: decomposing goals into discrete steps, executing each by invoking external tools, and dynamically adjusting based on tool outputs. Success hinges on <strong>LLM orchestration</strong>—the system's ability to accurately select the right tool and generate correct arguments at each decision point.
+                </p>
+                <p style="font-size: 1.125rem;">
+                    AgentFlux fundamentally reimagines this orchestration. Rather than relying on a monolithic LLM orchestrator, it employs <strong>multiple specialized LoRA adapters</strong> trained through a decoupled post-training pipeline and coordinated by a novel inference framework.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card" style="background: hsl(var(--accent) / 0.3);">
+                    <h3>Post-Training Pipeline</h3>
+                    <div>
+                        <h4 style="font-weight: 600; margin-top: 1rem;">1. Tool Selector Adapter</h4>
+                        <p style="font-size: 0.875rem;">Functions as a classifier, identifying the optimal tool for each workflow step during inference.</p>
+                    </div>
+                    <div>
+                        <h4 style="font-weight: 600; margin-top: 1rem;">2. Argument Generator Adapter</h4>
+                        <p style="font-size: 0.875rem;">Produces precise, context-appropriate arguments for the selected tool at each step.</p>
+                    </div>
+                </div>
+
+                <div class="card" style="background: hsl(var(--accent) / 0.3);">
+                    <h3>Decoupled Inference Framework</h3>
+                    <div>
+                        <h4 style="font-weight: 600; margin-top: 1rem;">Classification Sub-Step</h4>
+                        <p style="font-size: 0.875rem;">Dynamically loads the tool selector adapter to determine which tool to invoke.</p>
+                    </div>
+                    <div>
+                        <h4 style="font-weight: 600; margin-top: 1rem;">Argument Generation Sub-Step</h4>
+                        <p style="font-size: 0.875rem;">Dynamically loads the corresponding argument generator adapter to construct the tool's input parameters.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inference Pipeline Flow -->
+            <div style="margin-top: 3rem;">
+                <h3 style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">Inference Pipeline Flow</h3>
+
+                <div class="card" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+
+                        <!-- Step 1 -->
+                        <div style="display: flex; gap: 1rem; align-items: start; padding: 1rem; border-radius: 0.5rem; transition: all 0.2s;" onmouseover="this.style.background='hsl(var(--accent) / 0.3)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='hsl(var(--accent) / 0.2)'; this.style.transform='translateX(0)'">
+                            <div style="flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.125rem;">1</div>
+                            <div style="flex: 1; background: hsl(var(--accent) / 0.2); padding: 1rem; border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
+                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Toolset Selection</h4>
+                                <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin: 0;">
+                                    Base model routes to relevant toolset (Filesystem, Notion, Monday.com)
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Connector -->
+                        <div style="display: flex; justify-content: center;">
+                            <div style="width: 2px; height: 2rem; background: hsl(var(--border));"></div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div style="display: flex; gap: 1rem; align-items: start; padding: 1rem; border-radius: 0.5rem; transition: all 0.2s;" onmouseover="this.style.background='hsl(var(--accent) / 0.3)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='hsl(var(--accent) / 0.2)'; this.style.transform='translateX(0)'">
+                            <div style="flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.125rem;">2</div>
+                            <div style="flex: 1; background: hsl(var(--accent) / 0.2); padding: 1rem; border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
+                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Tool Selection (Classification)</h4>
+                                <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin: 0;">
+                                    Load Tool Selector LoRA adapter → Classify which specific tool to invoke
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Connector -->
+                        <div style="display: flex; justify-content: center;">
+                            <div style="width: 2px; height: 2rem; background: hsl(var(--border));"></div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div style="display: flex; gap: 1rem; align-items: start; padding: 1rem; border-radius: 0.5rem; transition: all 0.2s;" onmouseover="this.style.background='hsl(var(--accent) / 0.3)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='hsl(var(--accent) / 0.2)'; this.style.transform='translateX(0)'">
+                            <div style="flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.125rem;">3</div>
+                            <div style="flex: 1; background: hsl(var(--accent) / 0.2); padding: 1rem; border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
+                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Argument Generation</h4>
+                                <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin: 0;">
+                                    Load Argument Generator LoRA adapter → Generate precise, structured arguments
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Connector -->
+                        <div style="display: flex; justify-content: center;">
+                            <div style="width: 2px; height: 2rem; background: hsl(var(--border));"></div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div style="display: flex; gap: 1rem; align-items: start; padding: 1rem; border-radius: 0.5rem; transition: all 0.2s;" onmouseover="this.style.background='hsl(var(--accent) / 0.3)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='hsl(var(--accent) / 0.2)'; this.style.transform='translateX(0)'">
+                            <div style="flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.125rem;">3</div>
+                            <div style="flex: 1; background: hsl(var(--accent) / 0.2); padding: 1rem; border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
+                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Tool Execution</h4>
+                                <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin: 0;">
+                                    Execute in containerized sandbox → Return observation → Continue or summarize
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); text-align: center; margin-top: 1rem;">
+                    Complete inference pipeline showing hierarchical orchestration with dynamic LoRA adapter loading
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo -->
+    <section id="demo" class="section-bg">
+        <div class="container">
+            <h2>System Demonstration</h2>
+
+            <div class="card">
+                <h3 style="text-align: center; margin-bottom: 1.5rem;">Watch AgentFlux in Action</h3>
+                <p style="text-align: center; margin-bottom: 2rem;">
+                    See how AgentFlux orchestrates privacy-preserving tool calling across multiple applications,
+                    performing complex tasks while keeping all sensitive data on your device.
+                </p>
+
+                <!-- Demo Video -->
+                <div style="position: relative; width: 100%; background: hsl(var(--muted)); border-radius: 0.5rem; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid hsl(var(--border)); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <video
+                        controls
+                        style="width: 100%; height: auto; display: block;"
+                        preload="metadata"
+                    >
+                        <source src="./agentflux-llama-demo-trimmed.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); text-align: center; margin-bottom: 1.5rem;">
+                    Demo: AgentFlux performing file operations tasks entirely on-device, compared to Llama-3.1-8B model
+                </p>
+
+                <!-- Demo Features -->
+                <!-- <div class="grid grid-3" style="margin-top: 2rem;">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
+                        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Filesystem Operations</h4>
+                        <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                            Creating, organizing, and managing files with natural language commands
+                        </p>
+                    </div>
+
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+                        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Notion Integration</h4>
+                        <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                            Automated note-taking and knowledge base management
+                        </p>
+                    </div>
+
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Monday.com Tasks</h4>
+                        <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                            Project management and task coordination workflows
+                        </p>
+                    </div>
+                </div> -->
+            </div>
+
+            <!-- Example Workflow -->
+            <!-- <div class="card">
+                <h3>Example Workflow</h3>
+                <p style="margin-bottom: 1.5rem;">
+                    Here's how AgentFlux handles a multi-step task that spans across different applications:
+                </p>
+
+                <div style="background: hsl(var(--muted)); border-left: 4px solid hsl(var(--primary)); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <p style="font-weight: 600; margin-bottom: 0.5rem; color: hsl(var(--foreground));">User Request:</p>
+                    <p style="font-style: italic; color: hsl(var(--muted-foreground));">
+                        "Analyze my project files, create a summary document, and update my Monday.com board with the key findings."
+                    </p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+                    <div style="display: flex; gap: 1rem; align-items: start;">
+                        <div style="flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">1</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Read & Analyze Files</h4>
+                            <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                                AgentFlux uses filesystem tools to locate, read, and analyze project files locally
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; align-items: start;">
+                        <div style="flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">2</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Generate Summary</h4>
+                            <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                                Creates a structured summary document with key findings and insights
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; align-items: start;">
+                        <div style="flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">3</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.25rem;">Update Monday.com Board</h4>
+                            <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                                Automatically posts the summary to the appropriate Monday.com board with proper formatting
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: hsl(var(--primary) / 0.1); border-radius: 0.5rem; border: 1px solid hsl(var(--primary) / 0.2);">
+                    <p style="font-size: 0.875rem; text-align: center;">
+                        <strong>✨ All processing happens on-device</strong> — Your project files never leave your machine,
+                        ensuring complete privacy while achieving cloud-level automation capabilities.
+                    </p>
+                </div>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- Why It Matters -->
+    <section class="section-bg">
+        <div class="container">
+            <h2>Why It Matters</h2>
+
+            <div class="card">
+                <p style="font-size: 1.125rem; margin-bottom: 2rem; text-align: center;">
+                    AgentFlux bridges the performance gap between frontier orchestration models and local deployable systems.
+                </p>
+
+                <div class="grid grid-3">
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="margin-bottom: 1rem; display: flex; justify-content: center;">
+                            <div style="width: 4rem; height: 4rem; border-radius: 50%; background: hsl(var(--primary) / 0.2); display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 2rem;">🔒</span>
+                            </div>
+                        </div>
+                        <h3 style="font-size: 1.125rem; margin-bottom: 0.75rem;">Privacy-Preserving AI</h3>
+                        <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                            Agents that run fully offline, protecting sensitive user data from third-party exposure
+                        </p>
+                    </div>
+
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="margin-bottom: 1rem; display: flex; justify-content: center;">
+                            <div style="width: 4rem; height: 4rem; border-radius: 50%; background: hsl(var(--primary) / 0.2); display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 2rem;">⚡</span>
+                            </div>
+                        </div>
+                        <h3 style="font-size: 1.125rem; margin-bottom: 0.75rem;">Efficient Orchestration</h3>
+                        <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                            No reasoning latency overhead, fast execution on consumer hardware
+                        </p>
+                    </div>
+
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="margin-bottom: 1rem; display: flex; justify-content: center;">
+                            <div style="width: 4rem; height: 4rem; border-radius: 50%; background: hsl(var(--primary) / 0.2); display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 2rem;">🔧</span>
+                            </div>
+                        </div>
+                        <h3 style="font-size: 1.125rem; margin-bottom: 0.75rem;">Scalable & Modular</h3>
+                        <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                            Training for tool ecosystems that evolve over time
+                        </p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: hsl(var(--primary) / 0.1); border-radius: 0.5rem; border: 1px solid hsl(var(--primary) / 0.2);">
+                    <p style="font-size: 1rem; font-weight: 500; text-align: center; margin: 0;">
+                        By decoupling fine-tuning and introducing dynamic adapter loading, <strong>AgentFlux democratizes agentic AI</strong>, bringing practical autonomy to the edge.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Citation -->
+    <section id="citation">
+        <div class="container">
+            <h2>Citation</h2>
+            
+            <div class="card" style="max-width: 48rem; margin: 0 auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="margin: 0;">BibTeX</h3>
+                    <button class="btn btn-outline" onclick="copyBibtex()">
+                        📋 Copy
+                    </button>
+                </div>
+                
+                <div class="bibtex" id="bibtex">@article{agentflux2024,
+  title={AgentFlux: A Framework for Privacy-Preserving On-Device Agentic Systems},
+  author={[Authors to be added]},
+  journal={arXiv preprint arXiv:2510.00229},
+  year={2024}
+}</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>AgentFlux: Privacy-Preserving On-Device Agentic Systems</p>
+            <p style="margin-top: 0.5rem;">
+                Paper: <a href="https://arxiv.org/abs/2510.00229" target="_blank">arXiv:2510.00229</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function copyBibtex() {
+            const bibtex = document.getElementById('bibtex').textContent;
+            navigator.clipboard.writeText(bibtex).then(() => {
+                alert('BibTeX copied to clipboard!');
+            });
+        }
+    </script>
+</body>
 </html>
