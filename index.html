@@ -26,17 +26,17 @@
         }
         
         :root {
-            --background: 0 0% 100%;
-            --foreground: 0 0% 13%;
-            --muted: 0 0% 96%;
-            --muted-foreground: 0 0% 40%;
+            --background: 0 0% 0%;
+            --foreground: 0 0% 95%;
+            --muted: 0 0% 10%;
+            --muted-foreground: 0 0% 70%;
             --primary: 217 91% 60%;
             --primary-foreground: 0 0% 100%;
-            --accent: 217 91% 97%;
-            --accent-foreground: 217 91% 60%;
-            --card: 0 0% 100%;
-            --card-foreground: 0 0% 13%;
-            --border: 0 0% 90%;
+            --accent: 217 30% 20%;
+            --accent-foreground: 217 91% 70%;
+            --card: 0 0% 8%;
+            --card-foreground: 0 0% 95%;
+            --border: 0 0% 20%;
         }
         
         body {
@@ -208,8 +208,8 @@
         
         /* Architecture Diagram */
         .arch-diagram {
-            background: linear-gradient(135deg, hsl(var(--accent)), hsl(217 91% 95%));
-            border: 1px solid hsl(217 91% 85%);
+            background: linear-gradient(135deg, hsl(var(--accent)), hsl(217 30% 15%));
+            border: 1px solid hsl(var(--border));
             border-radius: 0.5rem;
             padding: 1.5rem 1rem;
             margin: 1.5rem auto;
@@ -217,7 +217,7 @@
         }
 
         .arch-box {
-            background: hsl(var(--background) / 0.9);
+            background: hsl(var(--card));
             backdrop-filter: blur(4px);
             border: 1px solid hsl(var(--border));
             border-radius: 0.5rem;
@@ -642,7 +642,7 @@
             </div>
 
             <div class="grid grid-2">
-                <div class="card" style="background: hsl(var(--accent) / 0.3);">
+                <div class="card">
                     <h3>Post-Training Pipeline</h3>
                     <div>
                         <h4 style="font-weight: 600; margin-top: 1rem;">1. Tool Selector Adapter</h4>
@@ -654,7 +654,7 @@
                     </div>
                 </div>
 
-                <div class="card" style="background: hsl(var(--accent) / 0.3);">
+                <div class="card">
                     <h3>Decoupled Inference Framework</h3>
                     <div>
                         <h4 style="font-weight: 600; margin-top: 1rem;">Classification Sub-Step</h4>
@@ -671,66 +671,39 @@
             <div style="margin-top: 1.5rem;">
                 <h3 style="text-align: center; margin-bottom: 1rem; font-size: 1.25rem;">Inference Pipeline Flow</h3>
 
-                <div class="card" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <div class="card" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);">
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
 
                         <!-- Step 1 -->
-                        <div style="display: flex; gap: 1rem; align-items: start; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s;" onmouseover="this.style.background='hsl(var(--accent) / 0.3)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='hsl(var(--accent) / 0.2)'; this.style.transform='translateX(0)'">
-                            <div style="flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem;">1</div>
-                            <div style="flex: 1; background: hsl(var(--accent) / 0.2); padding: 0.75rem; border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
-                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Toolset Selection</h4>
-                                <p style="font-size: 1rem; color: hsl(var(--muted-foreground)); margin: 0;">
-                                    Base model routes to relevant toolset (Filesystem, Notion, Monday.com)
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Connector -->
-                        <div style="display: flex; justify-content: center;">
-                            <div style="width: 2px; height: 1rem; background: hsl(var(--border));"></div>
+                        <div class="card" style="margin: 0;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Toolset Selection</h4>
+                            <p style="font-size: 1rem; color: hsl(var(--muted-foreground)); margin: 0;">
+                                Base model routes to relevant toolset (Filesystem, Notion, Monday.com)
+                            </p>
                         </div>
 
                         <!-- Step 2 -->
-                        <div style="display: flex; gap: 1rem; align-items: start; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s;" onmouseover="this.style.background='hsl(var(--accent) / 0.3)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='hsl(var(--accent) / 0.2)'; this.style.transform='translateX(0)'">
-                            <div style="flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem;">2</div>
-                            <div style="flex: 1; background: hsl(var(--accent) / 0.2); padding: 0.75rem; border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
-                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Tool Selection (Classification)</h4>
-                                <p style="font-size: 1rem; color: hsl(var(--muted-foreground)); margin: 0;">
-                                    Load Tool Selector LoRA adapter → Classify which specific tool to invoke
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Connector -->
-                        <div style="display: flex; justify-content: center;">
-                            <div style="width: 2px; height: 1rem; background: hsl(var(--border));"></div>
+                        <div class="card" style="margin: 0;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Tool Selection (Classification)</h4>
+                            <p style="font-size: 1rem; color: hsl(var(--muted-foreground)); margin: 0;">
+                                Load Tool Selector LoRA adapter → Classify which specific tool to invoke
+                            </p>
                         </div>
 
                         <!-- Step 3 -->
-                        <div style="display: flex; gap: 1rem; align-items: start; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s;" onmouseover="this.style.background='hsl(var(--accent) / 0.3)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='hsl(var(--accent) / 0.2)'; this.style.transform='translateX(0)'">
-                            <div style="flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem;">3</div>
-                            <div style="flex: 1; background: hsl(var(--accent) / 0.2); padding: 0.75rem; border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
-                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Argument Generation</h4>
-                                <p style="font-size: 1rem; color: hsl(var(--muted-foreground)); margin: 0;">
-                                    Load Argument Generator LoRA adapter → Generate precise, structured arguments
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Connector -->
-                        <div style="display: flex; justify-content: center;">
-                            <div style="width: 2px; height: 1rem; background: hsl(var(--border));"></div>
+                        <div class="card" style="margin: 0;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Argument Generation</h4>
+                            <p style="font-size: 1rem; color: hsl(var(--muted-foreground)); margin: 0;">
+                                Load Argument Generator LoRA adapter → Generate precise, structured arguments
+                            </p>
                         </div>
 
                         <!-- Step 4 -->
-                        <div style="display: flex; gap: 1rem; align-items: start; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s;" onmouseover="this.style.background='hsl(var(--accent) / 0.3)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='hsl(var(--accent) / 0.2)'; this.style.transform='translateX(0)'">
-                            <div style="flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem;">3</div>
-                            <div style="flex: 1; background: hsl(var(--accent) / 0.2); padding: 0.75rem; border-radius: 0.5rem; border: 1px solid hsl(var(--border));">
-                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Tool Execution</h4>
-                                <p style="font-size: 1rem; color: hsl(var(--muted-foreground)); margin: 0;">
-                                    Execute in containerized sandbox → Return observation → Continue or summarize
-                                </p>
-                            </div>
+                        <div class="card" style="margin: 0;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem;">Tool Execution</h4>
+                            <p style="font-size: 1rem; color: hsl(var(--muted-foreground)); margin: 0;">
+                                Execute in containerized sandbox → Return observation → Continue or summarize
+                            </p>
                         </div>
 
                     </div>
