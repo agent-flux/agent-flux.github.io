@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build output (keep root index.html and assets for GitHub Pages)
+dist/
+
+# Environment variables
+.env
+.env.local
+.env*.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Temporary files
+tmp/
+temp/
+
+# GitHub Pages deployment files - DO NOT IGNORE
+# These are built files but needed for GitHub Pages:
+# index.html (root)
+# assets/ (root)
+# 404.html (root)
+# favicon.png (root)
+# .nojekyll (root)
